@@ -30,6 +30,9 @@ if [ -f "/proc/device-tree/model" ]; then
     elif [[ $CPU_MODEL =~ Raspberry\ Pi\ [4] ]];then
         echo "Detected BCM27XX via device tree"
         curl -fsSL $CONFIGURE_BOARD_PATH/bcm_27xx.sh | bash
+    elif [[ $CPU_MODEL =~ ASUS\ Tinker\ Board\ 2/2S ]]; then 
+        echo "Detected Asus Tinker Board 2/2S via cpuinfo"
+        curl -fsSL $CONFIGURE_BOARD_PATH/tinker2.sh | bash
     else
         board_not_detected "/proc/device-tree/model" "$CPU_MODEL"
     fi
@@ -43,6 +46,9 @@ elif [ -f "/proc/cpuinfo" ]; then
     elif [[ $CPU_INFO =~ BCM28[0-9]{2} ]]; then
         echo "Detected BCM28XX via cpuinfo"
         curl -fsSL $CONFIGURE_BOARD_PATH/bcm_28xx.sh | bash
+    elif [[ $CPU_INFO =~ ASUS\ Tinker\ Board\ 2/2S ]]; then 
+        echo "Detected Asus Tinker Board 2/2S via cpuinfo"
+        curl -fsSL $CONFIGURE_BOARD_PATH/tinker2.sh | bash
     else
         board_not_detected "/proc/cpuinfo" "$CPU_INFO"
     fi

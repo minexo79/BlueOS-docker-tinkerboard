@@ -1,0 +1,40 @@
+// This is a custom device tree overlay for the spi0 peripheral on the
+// Asus Tinker Board 2 / 2S. It will configure only the spi0 mosi pin
+// (The other spi0 pins will not be driven by the spi0 peripheral,
+// and can be used for other functions). This is to be used with
+// the Blue Robotics Navigator autopilot hat, where the RGB
+// 'neopixel' led data pin is connected to the spi0 mosi pin on the
+// Asus Tinker Board 2 / 2S.
+
+// For Asus Tinker Board 2 / 2S:
+// spi0_cs_pins > spi1_cs0
+// spi0_pins    > spi1_tx
+
+/dts-v1/;
+/plugins/;
+
+#include "rk3399-tinker_board_2.dtsi"
+
+/ {
+    compatible = "rockchip,rk3399-tinker_board_2", "rockchip,rk3399";
+
+    fragment@0 {
+        target = <&spi1_cs0>;
+        flag0: __overlay__ {
+            rockchip,pins = <>;
+        }
+    };
+
+    fragment@1 {
+        target = <&spi1>;
+        frag1: __overlay__ {
+            cs-gpios = <>;
+            status = "okay";
+        };
+    };
+
+    fragment@2 {
+        target = <&spi1_tx>;
+    };
+
+};
