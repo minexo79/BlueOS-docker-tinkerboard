@@ -31,7 +31,7 @@ if [ -f "/proc/device-tree/model" ]; then
         echo "Detected BCM27XX via device tree"
         curl -fsSL $CONFIGURE_BOARD_PATH/bcm_27xx.sh | bash
     elif [[ $CPU_MODEL =~ ASUS\ Tinker\ Board\ 2/2S ]]; then 
-        echo "Detected Asus Tinker Board 2/2S via cpuinfo"
+        echo "Detected Asus Tinker Board 2/2S via device tree"
         curl -fsSL $CONFIGURE_BOARD_PATH/tinker2.sh | bash
     else
         board_not_detected "/proc/device-tree/model" "$CPU_MODEL"

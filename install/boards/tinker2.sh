@@ -20,33 +20,24 @@ dtc -@ -Hepapr -I dts -O dtb -o /boot/overlays/$DTS_NAME.dtbo /tmp/$DTS_NAME
 # Remove any configuration related to i2c and spi/spi1 and do the necessary changes for navigator
 echo "- Enable I2C, SPI and UART."
 for STRING in \
-    "enable_uart=" \
-    "dtoverlay=uart" \
-    "dtparam=i2c" \
-    "dtoverlay=i2c" \
-    "dtparam=spi=" \
-    "dtoverlay=spi" \
-    "gpio=" \
-    "dwc2" \
+    "#intf:uart0=off" \
+    "#intf:uart4=off" \
+    "#intf:i2c6=off" \
+    "#intf:i2c7=off" \
+    "#intf:i2s0=off" \
+    "#intf:spi1=off" \
+    "#intf:spi5=off" \
     ; do \
     sudo sed -i "/$STRING/d" /boot/config.txt
 done
 for STRING in \
-    "enable_uart=1" \
-    "dtoverlay=uart1" \
-    "dtoverlay=uart3" \
-    "dtoverlay=uart4" \
-    "dtoverlay=uart5" \
-    "dtparam=i2c_vc=on" \
-    "dtoverlay=i2c1,baudrate=1000000" \
-    "dtoverlay=i2c4,pins_6_7,baudrate=1000000" \
-    "dtoverlay=i2c6,pins_22_23,baudrate=400000" \
-    "dtparam=spi=on" \
-    "dtoverlay=spi0-led" \
-    "dtoverlay=spi1-3cs" \
-    "gpio=11,24,25=op,pu,dh" \
-    "gpio=37=op,pd,dl" \
-    "dtoverlay=dwc2" \
+    "intf:uart0=on" \
+    "intf:uart4=on" \
+    "intf:i2c6=on" \
+    "intf:i2c7=on" \
+    "intf:i2s0=on" \
+    "intf:spi1=on" \
+    "intf:spi5=on" \
     ; do \
     echo "$STRING" | sudo tee -a /boot/config.txt
 done
@@ -59,12 +50,12 @@ else
     touch "$MODULES_FILE" || true # Create if it does not exist
 fi
 
-echo "- Set up kernel modules."
-# Remove any configuration or commented part related to the i2c drive
-for STRING in "bcm2835-v4l2" "i2c-bcm2835" "i2c-dev"; do
-    sudo sed -i "/$STRING/d" "$MODULES_FILE"
-    echo "$STRING" | sudo tee -a "$MODULES_FILE"
-done
+echo "- Set up kernel modules. (Ignored)"
+# # Remove any configuration or commented part related to the i2c drive
+# for STRING in "bcm2835-v4l2" "i2c-bcm2835" "i2c-dev"; do
+#     sudo sed -i "/$STRING/d" "$MODULES_FILE"
+#     echo "$STRING" | sudo tee -a "$MODULES_FILE"
+# done
 
 # Remove any console serial configuration
 echo "- Configure serial."
@@ -83,20 +74,22 @@ grep -q dwc2 $CMDLINE_FILE || (
     sed -i '1 s/$/ modules-load=dwc2,g_ether/' $CMDLINE_FILE
 )
 
+# Asus Tinkerboard 2 / 2S Ignored
 # Update raspberry pi firmware
 # this is required to avoid 'i2c transfer timed out' kernel errors
 # on older firmware versions
-if grep -q ID=raspbian < /etc/os-release; then
-    RPI_FIRMWARE_VERSION=1340be4
-    if sudo JUST_CHECK=1 rpi-update $RPI_FIRMWARE_VERSION | grep "Firmware update required"; then
-        echo "- Run rpi update."
-        sudo SKIP_WARNING=1 rpi-update $RPI_FIRMWARE_VERSION
-    else
-        echo "- Firmware is up to date."
-    fi
-fi
+# if grep -q ID=raspbian < /etc/os-release; then
+#     RPI_FIRMWARE_VERSION=1340be4
+#     if sudo JUST_CHECK=1 rpi-update $RPI_FIRMWARE_VERSION | grep "Firmware update required"; then
+#         echo "- Run rpi update."
+#         sudo SKIP_WARNING=1 rpi-update $RPI_FIRMWARE_VERSION
+#     else
+#         echo "- Firmware is up to date."
+#     fi
+# fi
 
+# Asus Tinkerboard 2 / 2S Ignored
 # Force update of bootloader and VL085 firmware on the first boot
-echo "- Force update of VL085 and bootloader on first boot."
-SYSTEMD_EEPROM_UPDATE_FILE="/lib/systemd/system/rpi-eeprom-update.service"
-sudo sed -i '/^ExecStart=\/usr\/bin\/rpi-eeprom-update -s -a$/c\ExecStart=/bin/bash -c "/usr/bin/rpi-eeprom-update -a -d | (grep \\\"reboot to apply\\\" && echo \\\"Rebooting..\\\" && reboot || exit 0)"' $SYSTEMD_EEPROM_UPDATE_FILE
+echo "- Force update of VL085 and bootloader on first boot. (Ignored)"
+# SYSTEMD_EEPROM_UPDATE_FILE="/lib/systemd/system/rpi-eeprom-update.service"
+# sudo sed -i '/^ExecStart=\/usr\/bin\/rpi-eeprom-update -s -a$/c\ExecStart=/bin/bash -c "/usr/bin/rpi-eeprom-update -a -d | (grep \\\"reboot to apply\\\" && echo \\\"Rebooting..\\\" && reboot || exit 0)"' $SYSTEMD_EEPROM_UPDATE_FILE
