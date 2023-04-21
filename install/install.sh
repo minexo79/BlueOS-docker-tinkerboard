@@ -2,7 +2,7 @@
 
 # Set desired version to be installed
 VERSION="${VERSION:-master}"
-GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-minexo79/blueos-docker-tinkerboard}
+GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-minexo79/BlueOS-docker-tinkerboard}
 REMOTE="${REMOTE:-https://raw.githubusercontent.com/${GITHUB_REPOSITORY}}"
 ROOT="$REMOTE/$VERSION"
 
