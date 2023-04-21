@@ -21,7 +21,7 @@
         target = <&spi1_cs0>;
         flag0: __overlay__ {
             rockchip,pins = <>;
-        }
+        };
     };
 
     fragment@1 {
