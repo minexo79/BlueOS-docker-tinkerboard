@@ -10,8 +10,7 @@
 // spi0_pins    > spi1_tx
 
 /dts-v1/;
-
-// #include "rk3399-tinker_board_2.dtsi"
+/plugin/;
 
 / {
 	model = "ASUS Tinker Board 2/2S";
