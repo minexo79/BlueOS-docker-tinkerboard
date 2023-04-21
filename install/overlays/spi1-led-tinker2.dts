@@ -15,7 +15,8 @@
 #include "rk3399-tinker_board_2.dtsi"
 
 / {
-    compatible = "rockchip,rk3399-tinker_board_2", "rockchip,rk3399";
+	model = "ASUS Tinker Board 2/2S";
+	compatible = "rockchip,rk3399-tinker_board_2", "rockchip,rk3399";
 
     fragment@0 {
         target = <&spi1_cs0>;
