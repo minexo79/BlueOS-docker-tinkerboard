@@ -11,7 +11,6 @@
 // spi0_pins    > spi1_tx
 
 /dts-v1/;
-/plugins/;
 
 #include "rk3399-tinker_board_2.dtsi"
 
