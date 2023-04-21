@@ -88,8 +88,8 @@ else
     echo "Skipping hardware configuration"
 fi
 
-echo "Checking for blocked wifi and bluetooth."
-rfkill unblock all
+echo "Checking for blocked wifi and bluetooth. (Ignored)"
+# rfkill unblock all
 
 # Get the number of free blocks and the block size in bytes, and calculate the value in GB
 echo "Checking for available space."
@@ -137,7 +137,7 @@ then
     alias docker=dind
 fi
 
-sudo usermod -aG docker pi
+sudo usermod -aG docker linaro
 
 # Stop and remove all docker if NO_CLEAN is not defined
 test $NO_CLEAN || (
